@@ -14,5 +14,11 @@ clean:
 	rm -f $(OBJS) $(LIB)
 
 install: $(LIB)
-	install -d $(DESTDIR)/usr/lib
-	install -m 755 $(LIB) $(DESTDIR)/usr/lib
+	ifeq ($(OS_NAME),Linux)
+		install -d $(DESTDIR)/usr/lib
+		install -m 755 $(LIB) $(DESTDIR)/usr/lib
+	else ifeq ($(OS_NAME),Darwin)
+		install -d $(DESTDIR)/usr/local/lib
+		install -m 755 $(LIB) $(DESTDIR)/usr/local/lib
+	endif
+OS_NAME := $(shell uname -s | tr A-Z a-z)
